@@ -45,6 +45,7 @@ test('has title', async ({ page }) => {
     console.log('Downloaded file path:', downloadPath);
 
     const os = require('os');
+    var fs = require('fs');
 
     const destinationDirectory = './data';
     console.log(destinationDirectory);
