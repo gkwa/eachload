@@ -66,5 +66,5 @@ test('has title', async ({ page }) => {
       });
   });
 
-  await page.waitForTimeout((1 / 2) * 60 * 1000); // enuf time to download export
+  await page.waitForTimeout(10 * 60 * 1000); // enuf time to download export
 });
