@@ -45,22 +45,26 @@ test('has title', async ({ page }) => {
     console.log('Downloaded file path:', downloadPath);
 
     const os = require('os');
-    var fs = require('fs');
+
+    const fs = require('fs').promises;
+    const path = require('path');
 
     const destinationDirectory = './data';
     console.log(destinationDirectory);
-    fs.mkdirSync(destinationDirectory, { recursive: true });
 
-    try {
-      const filename = path.basename(downloadPath);
-      const destinationPath = path.join(destinationDirectory, filename);
-      console.log("moving file %s to %s", downloadPath, destinationPath)
-      await fs.rename(downloadPath, destinationPath);
-
-      console.log('File moved to:', destinationPath);
-    } catch (error) {
-      console.error('Error moving file:', error);
-    }
+    fs.mkdir(destinationDirectory, { recursive: true })
+      .then(() => {
+        const filename = path.basename(downloadPath);
+        const destinationPath = path.join(destinationDirectory, filename);
+        console.log('moving file %s to %s', downloadPath, destinationPath);
+        return fs.rename(downloadPath, destinationPath);
+      })
+      .then(() => {
+        console.log('File moved successfully');
+      })
+      .catch((error) => {
+        console.error('Error moving file:', error);
+      });
   });
 
   await page.waitForTimeout((1 / 2) * 60 * 1000); // enuf time to download export
