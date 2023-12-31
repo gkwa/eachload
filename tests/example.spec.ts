@@ -54,6 +54,7 @@ test('has title', async ({ page }) => {
     try {
       const filename = path.basename(downloadPath);
       const destinationPath = path.join(destinationDirectory, filename);
+      console.log("moving file %s to %s", downloadPath, destinationPath)
       await fs.rename(downloadPath, destinationPath);
 
       console.log('File moved to:', destinationPath);
