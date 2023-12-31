@@ -45,7 +45,6 @@ test('has title', async ({ page }) => {
     console.log('Downloaded file path:', downloadPath);
 
     const os = require('os');
-
     const fs = require('fs').promises;
     const path = require('path');
 
@@ -55,7 +54,7 @@ test('has title', async ({ page }) => {
     fs.mkdir(destinationDirectory, { recursive: true })
       .then(() => {
         const filename = path.basename(downloadPath);
-        const destinationPath = path.join(destinationDirectory, filename);
+        const destinationPath = path.join(destinationDirectory, filename).resolve();
         console.log('moving file %s to %s', downloadPath, destinationPath);
         return fs.rename(downloadPath, destinationPath);
       })
