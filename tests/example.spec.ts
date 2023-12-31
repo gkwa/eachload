@@ -54,7 +54,7 @@ test('has title', async ({ page }) => {
     fs.mkdir(destinationDirectory, { recursive: true })
       .then(() => {
         const filename = path.basename(downloadPath);
-        const destinationPath = path.join(destinationDirectory, filename).resolve();
+        const destinationPath = path.resolve(path.join(destinationDirectory, filename));
         console.log('moving file %s to %s', downloadPath, destinationPath);
         return fs.rename(downloadPath, destinationPath);
       })
