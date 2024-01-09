@@ -2,43 +2,46 @@ import { test, expect } from '@playwright/test';
 import fs from 'fs/promises';
 import path from 'path';
 
-test('has title', async ({ page }) => {
+test('test', async ({ page }) => {
   const USERNAME = process.env.SEATTLE_UTILITIES_USERNAME;
   const PASSWORD = process.env.SEATTLE_UTILITIES_PASSWORD;
-  // console.log(USERNAME);
-  // console.log(PASSWORD);
 
   if (typeof USERNAME === 'undefined' || typeof PASSWORD === 'undefined') {
     process.exit(1);
   }
 
   await page.goto('https://myutilities.seattle.gov/eportal');
-  await page
-    .locator('a')
-    .filter({ hasText: /^Login $/ })
-    .click();
-  await page.type('#userName', USERNAME);
-  await page.locator('input[type=password]').type(PASSWORD);
+  await page.getByRole('link', { name: 'Login', exact: true }).click();
+  await page.getByLabel('Username *').click();
+  await page.getByLabel('Username *').click();
+  await page.getByLabel('Username *').fill(USERNAME);
+  await page.getByPlaceholder('Password').click();
+  await page.getByPlaceholder('Password').click();
+  await page.getByPlaceholder('Password').fill(PASSWORD);
   await page.getByRole('button', { name: 'Login' }).click();
   await page.getByRole('link', { name: /^View Usage$/i }).click();
-  await page.waitForTimeout(2 * 1000);
-  await page.getByRole('link', { name: /^View Usage$/i }).click();
+  await page.getByRole('link', { name: 'View Usage', exact: true }).click();
   await page.getByRole('button', { name: 'View Usage Details' }).click();
-  await page.getByRole('button', { name: 'ENERGY USE' }).click();
-  await page.getByLabel('Change view').selectOption({ label: 'Day view' });
-  await page
-    .locator('span')
-    .filter({ hasText: /Download my data/ })
-    .click();
-  await page.keyboard.press('PageDown');
-  await page.keyboard.press('PageDown');
-  await page.keyboard.press('PageDown');
-  await page
-    .locator('label')
-    .filter({ hasText: /Export usage for a bill period/ })
-    .click();
-  await page.locator('label').filter({ hasText: /CSV/ }).click();
-  await page.getByRole('button', { name: 'EXPORT' }).click();
+  await page.getByRole('button', { name: 'Green Button Download my data' }).click();
+  await page.getByText('Export usage for a bill period').click();
+
+  page.pause();
+
+  const options = await page.$$eval('#period-bill-select option', (els) => {
+    return els.map((option) => option.textContent);
+  });
+  console.log(options);
+
+  //[
+  //  'Since your last bill: Nov 03, 2023 - Jan 06, 2024',
+  //  'Sep 07, 2023 - Nov 03, 2023',
+  //  'Jul 11, 2023 - Sep 06, 2023',
+  //  'May 09, 2023 - Jul 10, 2023',
+  //  'Mar 11, 2023 - May 08, 2023',
+  //  'Jan 10, 2023 - Mar 10, 2023',
+  //  'Nov 04, 2022 - Jan 09, 2023',
+  //  'Sep 07, 2022 - Nov 03, 2022'
+  //]
 
   page.on('download', async (download) => {
     const downloadPath = await download.path();
@@ -65,6 +68,11 @@ test('has title', async ({ page }) => {
         console.error('Error moving file:', error);
       });
   });
+
+  for (const option of options) {
+    await page.locator('#period-bill-select').selectOption({ label: option });
+    await page.getByRole('button', { name: 'Export' }).click();
+  }
 
   await page.waitForTimeout(10 * 60 * 1000); // enuf time to download export
 });
