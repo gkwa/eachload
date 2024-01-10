@@ -1,5 +1,4 @@
 import { defineConfig, devices } from '@playwright/test';
-import * as path from 'path';
 
 /**
  * Read environment variables from file.
@@ -10,9 +9,6 @@ import * as path from 'path';
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-
-// https://stackoverflow.com/a/45218692/1495086
-export const STORAGE_STATE = path.join(__dirname, 'playwright/.auth/user.json');
 
 export default defineConfig({
   timeout: 5 * 60 * 1000,
@@ -30,7 +26,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'https://myutilities.seattle.gov/eportal/#/account',
+    // baseURL: 'http://127.0.0.1:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on',
@@ -40,18 +36,16 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     // Setup project
-    {
-      name: 'setup',
-      testMatch: /global\.setup\.ts/,
-    },
+    { name: 'setup', testMatch: /.*\.setup\.ts/ },
+
     {
       name: 'chromium',
-      testMatch: '**/*loggedin.spec.ts',
-      dependencies: ['setup'],
       use: {
+        ...devices['Desktop Chrome'],
         // Use prepared auth state.
-        storageState: STORAGE_STATE,
+        storageState: 'playwright/.auth/user.json',
       },
+      dependencies: ['setup'],
     },
 
     // {

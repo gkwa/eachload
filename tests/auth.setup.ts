@@ -1,7 +1,8 @@
-import { test as setup, expect } from '@playwright/test';
-import { STORAGE_STATE } from '../playwright.config';
+import { test as setup, request } from '@playwright/test';
 
-setup('do login', async ({ page }) => {
+const authFile = 'playwright/.auth/user.json';
+
+setup('authenticate', async ({ page }) => {
   const USERNAME = process.env.SEATTLE_UTILITIES_USERNAME;
   const PASSWORD = process.env.SEATTLE_UTILITIES_PASSWORD;
 
@@ -19,7 +20,5 @@ setup('do login', async ({ page }) => {
   await page.getByPlaceholder('Password').fill(PASSWORD);
   await page.getByRole('button', { name: 'Login' }).click();
 
-  await page.waitForTimeout(10 * 1000);
-  await expect(page.getByRole('link', { name: 'Logout' })).toBeVisible();
-  await page.context().storageState({ path: STORAGE_STATE });
+  await page.context().storageState({ path: authFile });
 });
