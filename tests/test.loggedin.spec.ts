@@ -1,9 +1,15 @@
 import { test, expect } from '@playwright/test';
-import fs from 'fs/promises';
-import path from 'path';
+
+test.use({ storageState: 'playwright/.auth/user.json' });
+
+test.beforeEach(async ({ page }) => {
+  await page.goto('/');
+});
 
 test('test', async ({ page }) => {
-  await page.getByRole('button', { name: 'Login' }).click();
+  // await page.getByRole('button', { name: 'Login' }).click();
+  // await page.goto('https://myutilities.seattle.gov/eportal/#/account');
+  await expect(page.getByRole('link', { name: 'Logout' })).toBeVisible();
   await page.getByRole('link', { name: /^View Usage$/i }).click();
   await page.getByRole('link', { name: 'View Usage', exact: true }).click();
   await page.getByRole('button', { name: 'View Usage Details' }).click();
@@ -14,17 +20,6 @@ test('test', async ({ page }) => {
     return els.map((option) => option.textContent);
   });
   console.log(options);
-
-  //[
-  //  'Since your last bill: Nov 03, 2023 - Jan 06, 2024',
-  //  'Sep 07, 2023 - Nov 03, 2023',
-  //  'Jul 11, 2023 - Sep 06, 2023',
-  //  'May 09, 2023 - Jul 10, 2023',
-  //  'Mar 11, 2023 - May 08, 2023',
-  //  'Jan 10, 2023 - Mar 10, 2023',
-  //  'Nov 04, 2022 - Jan 09, 2023',
-  //  'Sep 07, 2022 - Nov 03, 2022'
-  //]
 
   page.on('download', async (download) => {
     const downloadPath = await download.path();
