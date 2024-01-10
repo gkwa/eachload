@@ -3,12 +3,29 @@ import fs from 'fs/promises';
 import path from 'path';
 
 test('test', async ({ page }) => {
+  const USERNAME = process.env.SEATTLE_UTILITIES_USERNAME;
+  const PASSWORD = process.env.SEATTLE_UTILITIES_PASSWORD;
+
+  if (typeof USERNAME === 'undefined' || typeof PASSWORD === 'undefined') {
+    process.exit(1);
+  }
+
+  await page.goto('https://myutilities.seattle.gov/eportal');
+  await page.getByRole('link', { name: 'Login', exact: true }).click();
+  await page.getByLabel('Username *').click();
+  await page.getByLabel('Username *').click();
+  await page.getByLabel('Username *').fill(USERNAME);
+  await page.getByPlaceholder('Password').click();
+  await page.getByPlaceholder('Password').click();
+  await page.getByPlaceholder('Password').fill(PASSWORD);
   await page.getByRole('button', { name: 'Login' }).click();
   await page.getByRole('link', { name: /^View Usage$/i }).click();
   await page.getByRole('link', { name: 'View Usage', exact: true }).click();
   await page.getByRole('button', { name: 'View Usage Details' }).click();
   await page.getByRole('button', { name: 'Green Button Download my data' }).click();
   await page.getByText('Export usage for a bill period').click();
+
+  page.pause();
 
   const options = await page.$$eval('#period-bill-select option', (els) => {
     return els.map((option) => option.textContent);
