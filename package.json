@@ -1,0 +1,12 @@
+{
+  "name": "eachload",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:taylormonacelli/eachload.git",
+  "author": "Taylor Monacelli <taylormonacelli@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@playwright/test": "^1.41.0",
+    "@types/node": "^20.11.5"
+  }
+}
