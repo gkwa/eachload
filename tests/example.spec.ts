@@ -1,6 +1,4 @@
 import { test, expect } from '@playwright/test';
-import fs from 'fs/promises';
-import path from 'path';
 
 test('test', async ({ page }) => {
   const USERNAME = process.env.SEATTLE_UTILITIES_USERNAME;
