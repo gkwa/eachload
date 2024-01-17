@@ -71,7 +71,8 @@ test('test', async ({ page }) => {
   });
 
   for (const option of options) {
-    await page.locator('#period-bill-select').selectOption({ label: option });
+    const selectOption = option !== null ? { label: option } : { label: undefined };
+    await page.locator('#period-bill-select').selectOption(selectOption);
     await page.getByRole('button', { name: 'Export' }).click();
   }
 
