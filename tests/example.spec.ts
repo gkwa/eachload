@@ -7,6 +7,7 @@ test('test', async ({ page }) => {
   const PASSWORD = process.env.SEATTLE_UTILITIES_PASSWORD;
 
   if (typeof USERNAME === 'undefined' || typeof PASSWORD === 'undefined') {
+    console.error('Please set env vars SEATTLE_UTILITIES_USERNAME and SEATTLE_UTILITIES_PASSWORD');
     process.exit(1);
   }
 
@@ -74,5 +75,5 @@ test('test', async ({ page }) => {
     await page.getByRole('button', { name: 'Export' }).click();
   }
 
-  await page.waitForTimeout(10 * 60 * 1000); // enuf time to download export
+  await page.waitForTimeout(10 * 1000); // 10 seconds
 });
