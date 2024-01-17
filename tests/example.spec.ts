@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 
 test('test', async ({ page }) => {
   const USERNAME = process.env.SEATTLE_UTILITIES_USERNAME;
