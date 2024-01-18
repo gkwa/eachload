@@ -33,8 +33,10 @@ func main() {
 		WithSecretVariable("SEATTLE_UTILITIES_PASSWORD", secret_pass).
 		WithDirectory("/src", client.Host().Directory("."), dagger.ContainerWithDirectoryOpts{
 			Include: []string{
-				"tests/", "playwright.config.ts",
-				"package.json", "yarn.lock",
+				"tests/",
+				"playwright.config.ts",
+				"package.json",
+				"yarn.lock",
 			},
 		})
 
