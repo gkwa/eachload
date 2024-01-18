@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"time"
 
 	"dagger.io/dagger"
 )
@@ -44,13 +45,9 @@ func main() {
 		"yarn", "install",
 	})
 
-	out, err := runner.WithExec([]string{"ls"}).Stderr(ctx)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(out)
-
-	out, err = runner.WithExec([]string{"npx", "playwright", "test"}).Stderr(ctx)
+	out, err := runner.WithEnvVariable("CACHEBUSTER", time.Now().String()).
+		WithExec([]string{"npx", "playwright", "test"}).
+		Stderr(ctx)
 	if err != nil {
 		panic(err)
 	}
