@@ -9,37 +9,30 @@ import (
 	"dagger.io/dagger"
 )
 
-func checkEnvVariables(variables ...string) []string {
-	var failedVariables []string
-
-	for _, variable := range variables {
-		if os.Getenv(variable) == "" {
-			failedVariables = append(failedVariables, variable)
-		}
-	}
-
-	return failedVariables
-}
-
 func main() {
 	timeout := 10 * time.Minute
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 
+	// Check that required environment variables are set
+	var failedVariables []string
 	requiredVariables := []string{
 		"SEATTLE_UTILITIES_USERNAME",
 		"SEATTLE_UTILITIES_PASSWORD",
 	}
-
-	failedVariables := checkEnvVariables(requiredVariables...)
-
+	for _, variable := range requiredVariables {
+		if os.Getenv(variable) == "" {
+			failedVariables = append(failedVariables, variable)
+		}
+	}
 	if len(failedVariables) > 0 {
 		for _, variable := range failedVariables {
-			fmt.Printf("Environment variable %s is not set\n", variable)
+			fmt.Fprintf(os.Stderr, "environment variable %s is not set\n", variable)
 		}
 		os.Exit(1)
 	}
 
+	// Connect to Docker and run tests
 	client, err := dagger.Connect(ctx, dagger.WithLogOutput(os.Stderr))
 	if err != nil {
 		panic(err)
