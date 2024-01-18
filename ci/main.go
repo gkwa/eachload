@@ -9,16 +9,35 @@ import (
 	"dagger.io/dagger"
 )
 
+func checkEnvVariables(variables ...string) []string {
+	var failedVariables []string
+
+	for _, variable := range variables {
+		if os.Getenv(variable) == "" {
+			failedVariables = append(failedVariables, variable)
+		}
+	}
+
+	return failedVariables
+}
+
 func main() {
-	timeout := 3 * time.Minute
+	timeout := 10 * time.Minute
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 
-	if os.Getenv("SEATTLE_UTILITIES_USERNAME") == "" {
-		panic("Environment variable SEATTLE_UTILITIES_USERNAME is not set")
+	requiredVariables := []string{
+		"SEATTLE_UTILITIES_USERNAME",
+		"SEATTLE_UTILITIES_PASSWORD",
 	}
-	if os.Getenv("SEATTLE_UTILITIES_PASSWORD") == "" {
-		panic("Environment variable SEATTLE_UTILITIES_PASSWORD is not set")
+
+	failedVariables := checkEnvVariables(requiredVariables...)
+
+	if len(failedVariables) > 0 {
+		for _, variable := range failedVariables {
+			fmt.Printf("Environment variable %s is not set\n", variable)
+		}
+		os.Exit(1)
 	}
 
 	client, err := dagger.Connect(ctx, dagger.WithLogOutput(os.Stderr))
@@ -27,7 +46,7 @@ func main() {
 	}
 	defer client.Close()
 
-	runner := client.Container().
+	source := client.Container().
 		From("mcr.microsoft.com/playwright:v1.41.0-jammy").
 		WithExec([]string{"npm", "install", "-g", "npm@latest"}).
 		WithDirectory("/src", client.Host().Directory("."), dagger.ContainerWithDirectoryOpts{
@@ -45,15 +64,24 @@ func main() {
 	secret_user := client.SetSecret("utilities-username-secret", os.Getenv("SEATTLE_UTILITIES_USERNAME"))
 	secret_pass := client.SetSecret("utilities-password-secret", os.Getenv("SEATTLE_UTILITIES_PASSWORD"))
 
-	// I want playwrite test to run everytime without caching.  https://docs.dagger.io/cookbook/#invalidate-cache
-	out, err := runner.WithEnvVariable("CACHEBUSTER", time.Now().String()).
+	runner := source.WithEnvVariable("CACHEBUSTER", time.Now().String()).
 		WithSecretVariable("SEATTLE_UTILITIES_USERNAME", secret_user).
-		WithSecretVariable("SEATTLE_UTILITIES_PASSWORD", secret_pass).
-		WithExec([]string{"npx", "playwright", "test"}).
-		Directory("/src/data").
-		Export(ctx, "./data")
-	if err != nil {
-		panic(err)
+		WithSecretVariable("SEATTLE_UTILITIES_PASSWORD", secret_pass)
+
+	playwright := runner.WithExec([]string{"npx", "playwright", "test"})
+
+	directories := map[string]string{
+		"data":              "./data",
+		"playwright-report": "./playwright-report",
+		"test-results":      "./test-results",
 	}
-	fmt.Println(out)
+
+	for srcPath, destPath := range directories {
+		out, err := playwright.Directory("/src/"+srcPath).Export(ctx, destPath)
+		if err != nil {
+			fmt.Printf("error exporting directory %s: %v\n", srcPath, err)
+			panic(err)
+		}
+		fmt.Println(out)
+	}
 }
