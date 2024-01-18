@@ -10,7 +10,9 @@ import (
 )
 
 func main() {
-	ctx := context.Background()
+	timeout := 3 * time.Minute
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
 
 	if os.Getenv("SEATTLE_UTILITIES_USERNAME") == "" {
 		panic("Environment variable SEATTLE_UTILITIES_USERNAME is not set")
