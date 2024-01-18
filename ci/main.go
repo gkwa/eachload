@@ -48,7 +48,8 @@ func main() {
 		WithSecretVariable("SEATTLE_UTILITIES_USERNAME", secret_user).
 		WithSecretVariable("SEATTLE_UTILITIES_PASSWORD", secret_pass).
 		WithExec([]string{"npx", "playwright", "test"}).
-		Stderr(ctx)
+		Directory("/src/data").
+		Export(ctx, "./data")
 	if err != nil {
 		panic(err)
 	}
