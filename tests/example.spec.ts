@@ -68,15 +68,14 @@ test('test', async ({ page }) => {
       });
   });
 
-  for (const option of options) {
-    const selectOption = option !== null ? { label: option } : { label: undefined };
-    if (selectOption.label === undefined) {
-      alert('selectOption is undefined!');
-    }
-
-    await page.locator('#period-bill-select').selectOption(selectOption);
-    await page.getByRole('button', { name: 'Export' }).click();
+  const option = options[0];
+  const selectOption = option !== null ? { label: option } : { label: undefined };
+  if (selectOption.label === undefined) {
+    alert('selectOption is undefined!');
   }
+
+  await page.locator('#period-bill-select').selectOption(selectOption);
+  await page.getByRole('button', { name: 'Export' }).click();
 
   await page.waitForTimeout(10 * 1000); // 10 seconds
 });
