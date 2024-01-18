@@ -40,6 +40,9 @@ func main() {
 	defer client.Close()
 
 	source := client.Container().
+		// https://github.com/microsoft/playwright/tags
+		// https://mcr.microsoft.com/en-us/product/playwright/tags
+		// https://github.com/microsoft/playwright/releases
 		From("mcr.microsoft.com/playwright:v1.41.0-jammy").
 		WithExec([]string{"npm", "install", "-g", "npm@latest"}).
 		WithDirectory("/src", client.Host().Directory("."), dagger.ContainerWithDirectoryOpts{
