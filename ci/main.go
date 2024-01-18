@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
 	"time"
 
@@ -53,7 +54,9 @@ func main() {
 		Directory("/src/data").
 		Export(ctx, "./data")
 	if err != nil {
-		panic(err)
+		log.Println(err)
+		return
 	}
+
 	fmt.Println(out)
 }
