@@ -10,6 +10,8 @@ import (
 )
 
 func main() {
+	// Set a timeout for the entire build, including fetching
+	// data and uploading playwrihgt artifacts
 	timeout := 10 * time.Minute
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
