@@ -1,0 +1,17 @@
+** purpose
+
+Fetch seattle utilities data using playwright and dagger.
+
+** docs
+
+https://docs.dagger.io/723462/use-secrets/#use-secrets-from-the-host-environment
+
+** 
+
+Usage example
+#+begin_example
+set +o history
+export SEATTLE_UTILITIES_USERNAME={secret} SEATTLE_UTILITIES_PASSWORD={secret}
+set -o history
+dagger run go run ci/main.go
+#+end_example
