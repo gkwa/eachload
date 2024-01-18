@@ -25,7 +25,7 @@ func main() {
 	}
 	defer client.Close()
 
-	source := client.Container().
+	runner := client.Container().
 		From("mcr.microsoft.com/playwright:v1.41.0-jammy").
 		WithExec([]string{"npm", "install", "-g", "npm@latest"}).
 		WithDirectory("/src", client.Host().Directory("."), dagger.ContainerWithDirectoryOpts{
@@ -35,16 +35,16 @@ func main() {
 				"package.json",
 				"yarn.lock",
 			},
-		})
-
-	runner := source.WithWorkdir("/src").WithExec([]string{
+		}).
+		WithWorkdir("/src").WithExec([]string{
 		"yarn", "install",
 	})
 
 	secret_user := client.SetSecret("utilities-username-secret", os.Getenv("SEATTLE_UTILITIES_USERNAME"))
 	secret_pass := client.SetSecret("utilities-password-secret", os.Getenv("SEATTLE_UTILITIES_PASSWORD"))
 
-	out, err := runner.WithEnvVariable("CACHEBUSTER", time.Now().String()).
+	 // I want playwrite test to run everytime without caching.  https://docs.dagger.io/cookbook/#invalidate-cache
+	 out, err := runner.WithEnvVariable("CACHEBUSTER", time.Now().String()).
 		WithSecretVariable("SEATTLE_UTILITIES_USERNAME", secret_user).
 		WithSecretVariable("SEATTLE_UTILITIES_PASSWORD", secret_pass).
 		WithExec([]string{"npx", "playwright", "test"}).
