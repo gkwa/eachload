@@ -4,7 +4,10 @@ Fetch seattle utilities data using playwright and dagger.
 
 ** docs
 
-https://docs.dagger.io/723462/use-secrets/#use-secrets-from-the-host-environment
++ https://docs.dagger.io/723462/use-secrets/#use-secrets-from-the-host-environment
++ https://myutilities.seattle.gov/eportal/#/
++ https://docs.dagger.io/cookbook/#invalidate-cache
++ https://playwright.dev/docs/intro
 
 ** 
 
