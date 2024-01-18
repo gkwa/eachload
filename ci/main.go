@@ -66,6 +66,7 @@ func main() {
 
 	playwright := runner.WithExec([]string{"npx", "playwright", "test"})
 
+	// Gather test results and export them to the host
 	directories := map[string]string{
 		"data":              "./data",
 		"playwright-report": "./playwright-report",
