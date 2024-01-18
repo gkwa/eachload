@@ -30,6 +30,7 @@ func main() {
 
 	source := client.Container().
 		From("mcr.microsoft.com/playwright:v1.41.0-jammy").
+		WithExec([]string{"npm", "install", "-g", "npm@latest"}).
 		WithSecretVariable("SEATTLE_UTILITIES_USERNAME", secret_user).
 		WithSecretVariable("SEATTLE_UTILITIES_PASSWORD", secret_pass).
 		WithDirectory("/src", client.Host().Directory("."), dagger.ContainerWithDirectoryOpts{
