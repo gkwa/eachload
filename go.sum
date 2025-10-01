@@ -62,6 +62,8 @@ dagger.io/dagger v0.18.18 h1:m46tXjiXK5bCqyuW/XPZp8Oc1pUeHN/pV+kSyhgWu5k=
 dagger.io/dagger v0.18.18/go.mod h1:azlZ24m2br95t0jQHUBpL5SiafeqtVDLl1Itlq6GO+4=
 dagger.io/dagger v0.18.19 h1:P2XobFwYJOh+CTUfRIry85wF93M4MeUqZQcL1RMN6hk=
 dagger.io/dagger v0.18.19/go.mod h1:NVjJFRJ4h1IlpFSRBt8cEVQh0r1n23tONo8ZBgS3cUw=
+dagger.io/dagger v0.19.0 h1:Lr7UJ+/PocmigoEzMc57os1x8N/38hqIi2lSBQUoKBw=
+dagger.io/dagger v0.19.0/go.mod h1:eTvzKtx7BfkIvmkoSxycd2jOAu9Esg0UrmsTAlDi+Rk=
 github.com/99designs/gqlgen v0.17.31 h1:VncSQ82VxieHkea8tz11p7h/zSbvHSxSDZfywqWt158=
 github.com/99designs/gqlgen v0.17.31/go.mod h1:i4rEatMrzzu6RXaHydq1nmEPZkb3bKQsnxNRHS4DQB4=
 github.com/99designs/gqlgen v0.17.49 h1:b3hNGexHd33fBSAd4NDT/c3NCcQzcAVkknhN9ym36YQ=
@@ -86,6 +88,8 @@ github.com/99designs/gqlgen v0.17.75 h1:GwHJsptXWLHeY7JO8b7YueUI4w9Pom6wJTICosDt
 github.com/99designs/gqlgen v0.17.75/go.mod h1:p7gbTpdnHyl70hmSpM8XG8GiKwmCv+T5zkdY8U8bLog=
 github.com/99designs/gqlgen v0.17.79 h1:RTsJZtdzcfROeWdt42NGMIabIbiBn69YyVmLEAuxtnA=
 github.com/99designs/gqlgen v0.17.79/go.mod h1:vgNcZlLwemsUhYim4dC1pvFP5FX0pr2Y+uYUoHFb1ig=
+github.com/99designs/gqlgen v0.17.80 h1:S64VF9SK+q3JjQbilgdrM0o4iFQgB54mVQ3QvXEO4Ek=
+github.com/99designs/gqlgen v0.17.80/go.mod h1:vgNcZlLwemsUhYim4dC1pvFP5FX0pr2Y+uYUoHFb1ig=
 github.com/Khan/genqlient v0.6.0 h1:Bwb1170ekuNIVIwTJEqvO8y7RxBxXu639VJOkKSrwAk=
 github.com/Khan/genqlient v0.6.0/go.mod h1:rvChwWVTqXhiapdhLDV4bp9tz/Xvtewwkon4DpWWCRM=
 github.com/Khan/genqlient v0.7.0 h1:GZ1meyRnzcDTK48EjqB8t3bcfYvHArCUUvgOwpz1D4w=
