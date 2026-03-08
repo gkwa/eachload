@@ -2,7 +2,7 @@ module main
 
 go 1.24.0
 
-toolchain go1.26.0
+toolchain go1.26.1
 
 require dagger.io/dagger v0.20.0
 
