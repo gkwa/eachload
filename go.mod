@@ -4,7 +4,7 @@ go 1.26.1
 
 toolchain go1.27.1
 
-require dagger.io/dagger v0.21.9
+require dagger.io/dagger v0.21.10
 
 require (
 	github.com/99designs/gqlgen v0.17.89 // indirect
